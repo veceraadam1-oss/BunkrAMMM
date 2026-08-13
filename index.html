@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="cs">
+<link rel="icon" type="image/png" href="favicon.png">>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bunkr AMMM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bark: #4a3626;
+    --bark-dark: #2f2115;
+    --leaf-dark: #1f3d24;
+    --leaf: #3c6b3a;
+    --leaf-light: #7fa86f;
+    --moss: #a8c39a;
+    --cream: #f7f6ee;
+    --paper: #fffdf7;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--bark-dark);
+    font-family:'Nunito', sans-serif;
+    line-height:1.6;
+  }
+
+  /* subtle leaf-scatter background */
+  body{
+    background-image:
+      radial-gradient(circle at 8% 15%, rgba(60,107,58,0.07) 0, transparent 60px),
+      radial-gradient(circle at 92% 30%, rgba(60,107,58,0.06) 0, transparent 70px),
+      radial-gradient(circle at 20% 80%, rgba(60,107,58,0.06) 0, transparent 80px),
+      radial-gradient(circle at 85% 88%, rgba(60,107,58,0.05) 0, transparent 90px);
+  }
+
+  h1,h2,h3{ font-family:'Kalam', cursive; }
+
+  .stick-divider{
+    height: 14px;
+    margin: 0 auto;
+    max-width: 900px;
+    background-repeat: repeat-x;
+    background-size: 60px 14px;
+    opacity:0.55;
+  }
+  .stick-divider svg{ display:block; }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--leaf-dark);
+    border-bottom:4px solid var(--bark);
+    padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  header.nav .brand{
+    color:var(--paper);
+    font-family:'Kalam', cursive;
+    font-size:1.5rem;
+    letter-spacing:1px;
+    display:flex; align-items:center; gap:10px;
+  }
+  header.nav .brand .badge-dot{
+    width:12px;height:12px;border-radius:50%;
+    background:var(--leaf-light);
+    box-shadow:0 0 0 3px rgba(127,168,111,0.25);
+  }
+  header.nav nav a{
+    color:var(--moss);
+    text-decoration:none;
+    font-weight:700;
+    margin-left:22px;
+    font-size:0.95rem;
+    transition:color .2s;
+  }
+  header.nav nav a:hover{ color:var(--paper); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:78vh;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero img{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    filter:saturate(1.05) contrast(1.03);
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(20,32,18,0.15) 0%, rgba(15,24,13,0.35) 55%, rgba(10,16,9,0.88) 100%);
+  }
+  .hero-content{
+    position:relative; z-index:2;
+    padding:60px 8vw 50px;
+    color:var(--paper);
+    max-width:900px;
+  }
+  .hero-eyebrow{
+    display:inline-block;
+    background:rgba(247,246,238,0.12);
+    border:1.5px solid rgba(247,246,238,0.5);
+    color:var(--paper);
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:0.8rem;
+    font-weight:700;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    backdrop-filter:blur(2px);
+  }
+  .hero h1{
+    font-size:clamp(3rem, 9vw, 6rem);
+    margin:0 0 10px;
+    line-height:0.95;
+    text-shadow:0 4px 18px rgba(0,0,0,0.5);
+    transform:rotate(-1.2deg);
+  }
+  .hero p.sub{
+    font-size:1.15rem;
+    max-width:560px;
+    color:var(--moss);
+    font-weight:600;
+    margin:0;
+  }
+
+  /* ---------- WOODEN SIGN WARNING ---------- */
+  .signboard-wrap{
+    display:flex; justify-content:center;
+    margin: -46px auto 0;
+    position:relative; z-index:5;
+    padding:0 20px;
+  }
+  .signboard{
+    background:
+      repeating-linear-gradient(90deg, #5a4028 0px, #5a4028 3px, #64482e 3px, #64482e 46px);
+    border:5px solid var(--bark-dark);
+    border-radius:6px;
+    box-shadow:0 14px 30px rgba(0,0,0,0.35);
+    padding:20px 34px;
+    transform:rotate(1deg);
+    position:relative;
+    max-width:640px;
+  }
+  .signboard::before, .signboard::after{
+    content:"";
+    position:absolute;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #cfcfc4, #6b6b60);
+    top:10px;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.6);
+  }
+  .signboard::before{ left:10px; }
+  .signboard::after{ right:10px; }
+  .signboard p{
+    margin:0;
+    text-align:center;
+    color:#fff6de;
+    font-family:'Kalam', cursive;
+    font-size:1.4rem;
+    text-shadow:0 2px 3px rgba(0,0,0,0.5);
+    letter-spacing:0.5px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    max-width:900px;
+    margin:0 auto;
+    padding:80px 24px;
+  }
+  .eyebrow-label{
+    font-weight:800;
+    color:var(--leaf);
+    letter-spacing:2px;
+    text-transform:uppercase;
+    font-size:0.8rem;
+    margin-bottom:8px;
+  }
+  h2.section-title{
+    font-size:2.6rem;
+    color:var(--leaf-dark);
+    margin:0 0 26px;
+    transform:rotate(-0.6deg);
+  }
+
+  .about-card{
+    background:var(--paper);
+    border:2px solid var(--moss);
+    border-radius:16px;
+    padding:38px 40px;
+    box-shadow:0 10px 0 -4px var(--moss), 0 18px 30px rgba(63,90,54,0.12);
+    position:relative;
+  }
+  .about-card p{
+    font-size:1.12rem;
+    margin:0 0 16px;
+  }
+  .about-card p:last-child{ margin-bottom:0; }
+  .about-card .highlight{
+    color:var(--leaf-dark);
+    font-weight:800;
+    background:linear-gradient(180deg, transparent 60%, var(--moss) 60%);
+    padding:0 2px;
+  }
+
+  .facts-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:34px;
+  }
+  .fact{
+    background:var(--leaf-dark);
+    color:var(--paper);
+    border-radius:12px;
+    padding:20px 16px;
+    text-align:center;
+    transform:rotate(var(--r,0deg));
+  }
+  .fact:nth-child(1){ --r:-1.5deg; }
+  .fact:nth-child(2){ --r:1deg; }
+  .fact:nth-child(3){ --r:-0.5deg; }
+  .fact .num{
+    font-family:'Kalam', cursive;
+    font-size:1.8rem;
+    color:var(--leaf-light);
+    display:block;
+    margin-bottom:4px;
+  }
+  .fact .label{
+    font-size:0.85rem;
+    font-weight:600;
+    color:var(--moss);
+  }
+
+  /* member stumps */
+  .members{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:40px;
+  }
+  .stump{
+    flex:1 1 120px;
+    background: radial-gradient(circle at 50% 40%, #caa06a, #a97c4a 70%, #8a6238 100%);
+    border:5px solid #6b4423;
+    border-radius:50%;
+    aspect-ratio:1;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    color:#3a2412;
+    font-family:'Kalam', cursive;
+    font-weight:700;
+    font-size:0.95rem;
+    padding:10px;
+    box-shadow:inset 0 0 0 3px rgba(255,255,255,0.15), 0 8px 16px rgba(0,0,0,0.15);
+    position:relative;
+  }
+  .stump.new::after{
+    content:"NOVÝ";
+    position:absolute; top:-10px; right:-6px;
+    background:var(--leaf);
+    color:#fff;
+    font-size:0.6rem;
+    padding:3px 8px;
+    border-radius:999px;
+    font-family:'Nunito', sans-serif;
+    font-weight:800;
+    letter-spacing:1px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  /* rules band */
+  .rules-band{
+    background:var(--leaf-dark);
+    color:var(--paper);
+    padding:70px 24px;
+    text-align:center;
+  }
+  .rules-band h2{
+    font-size:2.4rem;
+    margin:0 0 8px;
+    color:var(--paper);
+  }
+  .rules-band p.lead{
+    color:var(--moss);
+    font-weight:600;
+    margin:0 0 34px;
+  }
+  .rule-plank{
+    max-width:520px;
+    margin:0 auto;
+    background:repeating-linear-gradient(90deg,#5a4028 0px,#5a4028 3px,#64482e 3px,#64482e 46px);
+    border:5px solid var(--bark-dark);
+    border-radius:8px;
+    padding:26px 30px;
+    box-shadow:0 16px 34px rgba(0,0,0,0.4);
+    transform:rotate(-1deg);
+  }
+  .rule-plank p{
+    margin:0;
+    font-family:'Kalam', cursive;
+    font-size:1.7rem;
+    color:#fff6de;
+    text-shadow:0 2px 3px rgba(0,0,0,0.5);
+  }
+
+  footer{
+    text-align:center;
+    padding:34px 20px 44px;
+    color:var(--leaf-dark);
+    font-weight:700;
+    font-size:0.9rem;
+  }
+  footer .badge-dot{
+    display:inline-block;
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--leaf);
+    margin-right:8px;
+  }
+
+  @media (max-width:640px){
+    .facts-row{ grid-template-columns:1fr; }
+    .about-card{ padding:28px 22px; }
+    .hero-content{ padding:44px 6vw 34px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="brand"><span class="badge-dot"></span> BUNKR AMMM</div>
+  <nav>
+    <a href="#onas">O nás</a>
+    <a href="#pravidla">Pravidla</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <img src="bunkr.jpg" alt="Náš bunkr v lese">
+  <div class="hero-content">
+    <span class="hero-eyebrow">Přísně tajná základna</span>
+    <h1>Bunkr AMMM</h1>
+    <p class="sub">Postavený vlastníma rukama z klacků, bahna a dobrodružství. Hluboko v lese, kam vede jen jedna stezka.</p>
+  </div>
+</section>
+
+<div class="signboard-wrap">
+  <div class="signboard">
+    <p>⚠ Prosím, neničte náš bunkr! ⚠</p>
+  </div>
+</div>
+
+<section id="onas">
+  <div class="eyebrow-label">Kdo jsme</div>
+  <h2 class="section-title">O nás</h2>
+  <div class="about-card">
+    <p>Jsme parta <span class="highlight">3 kluků</span>, kteří se baví hraním videoher, ale ve volném čase raději vyrážíme do lesa a stavíme bunkry.</p>
+    <p>Stavba tohoto bunkru začala <span class="highlight">15. 11. 2025</span> a stále pokračuje — i po roce na něm pořád něco vylepšujeme a přidáváme nové klacky.</p>
+    <p>A tenhle rok se k nám navíc přidal <span class="highlight">nový člen party!</span></p>
+
+    <div class="facts-row">
+      <div class="fact">
+        <span class="num">3+1</span>
+        <span class="label">kluci v partě</span>
+      </div>
+      <div class="fact">
+        <span class="num">15. 11. 2025</span>
+        <span class="label">začátek stavby</span>
+      </div>
+      <div class="fact">
+        <span class="num">∞</span>
+        <span class="label">klacků použito</span>
+      </div>
+    </div>
+
+    <div class="members">
+      <div class="stump">Zakládající člen</div>
+      <div class="stump">Zakládající člen</div>
+      <div class="stump">Zakládající člen</div>
+      <div class="stump new">Nový člen</div>
+    </div>
+  </div>
+</section>
+
+<div class="stick-divider">
+  <svg viewBox="0 0 60 14" xmlns="http://www.w3.org/2000/svg">
+    <line x1="2" y1="12" x2="20" y2="2" stroke="#4a3626" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="26" y1="12" x2="44" y2="2" stroke="#4a3626" stroke-width="2.5" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<section id="pravidla" class="rules-band" style="max-width:none; margin:0;">
+  <div class="eyebrow-label" style="color:var(--leaf-light);">Základní pravidlo</div>
+  <h2>Respektuj bunkr</h2>
+  <p class="lead">Stavěli jsme dlouho a s láskou. Buď v lese kámoš, ne bourač.</p>
+  <div class="rule-plank">
+    <p>🚫 Neničte náš bunkr! 🚫</p>
+  </div>
+</section>
+
+<footer>
+  <span class="badge-dot"></span>Bunkr AMMM — postaveno v lese, ne v Minecraftu
+</footer>
+
+</body>
+</html>
